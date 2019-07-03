@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sis-demo
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sis-demo-ingress
+  namespace: sis-demo
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: frontend.elc.cap2.sis.com
+      http:
+        paths:
+        - backend:
+              serviceName: frontend
+              servicePort: 8080
+    - host: backend.elc.cap2.sis.com
+      http:
+        paths:
+        - backend:
+              serviceName: backend
+              servicePort: 8080
+    - host: queue.elc.cap2.sis.com
+      http:
+        paths:
+        - backend:
+              serviceName: queue
+              servicePort: 8161

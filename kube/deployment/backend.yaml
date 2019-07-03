@@ -1,10 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sis-demo
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: backend
+  namespace: sis-demo
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -13,37 +18,37 @@ spec:
         prometheus.io/scrape: 'true'
     spec:
       containers:
-      - name: backend
-        image: spring-boot-hpa
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: ACTIVEMQ_BROKER_URL
-          value: "tcp://queue:61616"
-        - name: STORE_ENABLED
-          value: "false"
-        - name: WORKER_ENABLED
-          value: "true"
-        ports:
-          - containerPort: 8080
-        readinessProbe:
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          httpGet:
-            path: /health
-            port: 8080
-        resources:
-          limits:
-            memory: 256Mi
+        - name: backend
+          image: seenidockerregistry.azurecr.io/elc-service:0.0.2-SNAPSHOT
+          imagePullPolicy: Always
+          env:
+            - name: ACTIVEMQ_BROKER_URL
+              value: "tcp://queue:61616"
+            - name: STORE_ENABLED
+              value: "false"
+            - name: WORKER_ENABLED
+              value: "true"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            httpGet:
+              path: /health
+              port: 8080
+          resources:
+            limits:
+              memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  namespace: sis-demo
 spec:
   ports:
-  - nodePort: 31000
-    port: 80
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
+      name: http
   selector:
     app: backend
-  type: NodePort

@@ -1,9 +1,9 @@
-package com.learnk8s.app.service;
+package sis.cap2.elc.service;
 
-import com.learnk8s.app.queue.QueueService;
+import sis.cap2.elc.queue.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.learnk8s.app.SpringBootApplicationTests;
+import sis.cap2.elc.SpringBootApplicationTests;
 
 public class QueueServiceServiceImplTest extends SpringBootApplicationTests {
 

@@ -1,8 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sis-demo
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: sis-demo
 spec:
   replicas: 1
   template:
@@ -11,37 +16,37 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: spring-boot-hpa
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: ACTIVEMQ_BROKER_URL
-          value: "tcp://queue:61616"
-        - name: STORE_ENABLED
-          value: "true"
-        - name: WORKER_ENABLED
-          value: "false"
-        ports:
-          - containerPort: 8080
-        readinessProbe:
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          httpGet:
-            path: /health
-            port: 8080
-        resources:
-          limits:
-            memory: 512Mi
+        - name: frontend
+          image: seenidockerregistry.azurecr.io/elc-service:0.0.2-SNAPSHOT
+          imagePullPolicy: Always
+          env:
+            - name: ACTIVEMQ_BROKER_URL
+              value: "tcp://queue:61616"
+            - name: STORE_ENABLED
+              value: "true"
+            - name: WORKER_ENABLED
+              value: "false"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            httpGet:
+              path: /health
+              port: 8080
+          resources:
+            limits:
+              memory: 512Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: sis-demo
 spec:
   ports:
-  - nodePort: 32000
-    port: 80
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
+      name: http
   selector:
     app: frontend
-  type: NodePort

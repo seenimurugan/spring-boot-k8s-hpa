@@ -3,9 +3,12 @@ server:
 activemq:
   brokerUrl: ${ACTIVEMQ_BROKER_URL:vm://localhost:61616}
 queue:
-  name: ${QUEUE_NAME:mainQueue}
+  name: ${QUEUE_NAME:ELC-Queue}
 worker:
   name: ${HOSTNAME:worker1}
   enabled: ${WORKER_ENABLED:true}
 store:
   enabled: ${STORE_ENABLED:true}
+logging:
+  level:
+    root: debug

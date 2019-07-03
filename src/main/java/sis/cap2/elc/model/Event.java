@@ -1,6 +1,6 @@
-package com.learnk8s.app.model;
+package sis.cap2.elc.model;
 
-public class Ticket {
+public class Event {
     private long quantity;
 
     public long getQuantity() {

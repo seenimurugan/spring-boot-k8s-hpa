@@ -1,7 +1,7 @@
-package com.learnk8s.app.controller;
+package sis.cap2.elc.controller;
 
-import com.learnk8s.app.model.Ticket;
-import com.learnk8s.app.queue.QueueService;
+import sis.cap2.elc.model.Event;
+import sis.cap2.elc.queue.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Controller
-public class HelloController {
+public class CommonController {
 
     @Autowired
     private QueueService queueService;
@@ -33,7 +33,7 @@ public class HelloController {
     @GetMapping("/")
     public String home(Model model) {
         int pendingMessages = queueService.pendingJobs(queueName);
-        model.addAttribute("ticket", new Ticket());
+        model.addAttribute("event", new Event());
         model.addAttribute("pendingJobs", pendingMessages);
         model.addAttribute("completedJobs", queueService.completedJobs());
         model.addAttribute("isConnected", queueService.isUp() ? "yes" : "no");
@@ -45,8 +45,8 @@ public class HelloController {
     }
 
     @PostMapping("/submit")
-    public String submit(@ModelAttribute Ticket ticket) {
-        for (long i = 0; i < ticket.getQuantity(); i++) {
+    public String submit(@ModelAttribute Event event) {
+        for (long i = 0; i < event.getQuantity(); i++) {
             String id = UUID.randomUUID().toString();
             queueService.send(queueName, id);
         }

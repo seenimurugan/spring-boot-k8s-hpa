@@ -1,8 +1,9 @@
----
+
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: spring-boot-hpa
+  name: cap2-elc-backend-service-autoscaler
+  namespace: sis-demo
 spec:
   scaleTargetRef:
     apiVersion: extensions/v1beta1

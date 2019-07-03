@@ -1,6 +1,6 @@
-package com.learnk8s.app;
+package sis.cap2.elc;
 
-import com.learnk8s.app.queue.QueueService;
+import sis.cap2.elc.queue.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
